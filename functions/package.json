@@ -2,7 +2,7 @@
   "name": "functions",
   "scripts": {
     "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --import ../emulators --export-on-exit",
+    "serve": "npm run build && firebase emulators:start --import ../emulators",
     "lint": "eslint .",
     "codegen": "graphql-codegen -r dotenv/config --config codegen.yml"
   },

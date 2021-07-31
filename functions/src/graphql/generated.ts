@@ -201,6 +201,20 @@ export enum User_Select_Column {
   Username = 'username'
 }
 
+export type CreateUserMutationVariables = Exact<{
+  id: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type CreateUserMutation = (
+  { __typename?: 'mutation_root' }
+  & { user?: Maybe<(
+    { __typename?: 'user' }
+    & { createdAt: User['created_at'] }
+  )> }
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -213,6 +227,13 @@ export type UsersQuery = (
 );
 
 
+export const CreateUserDocument = gql`
+    mutation CreateUser($id: String!, $email: String!) {
+  user: insert_user_one(object: {id: $id, email: $email, username: $email}) {
+    createdAt: created_at
+  }
+}
+    `;
 export const UsersDocument = gql`
     query Users {
   users: user {
@@ -229,6 +250,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');
+    },
     Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');
     }
