@@ -13,6 +13,12 @@ insert_permissions:
 select_permissions:
 - permission:
     columns:
+    - id
+    - username
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
     - created_at
     - email
     - id
