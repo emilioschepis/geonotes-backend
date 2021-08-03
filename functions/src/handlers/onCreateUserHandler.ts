@@ -3,9 +3,7 @@ import * as functions from "firebase-functions";
 
 import { sdk } from "../graphql/client";
 
-export default async function onCreateUserHandler(
-  user: functions.auth.UserRecord
-) {
+export default async function onCreateUserHandler(user: functions.auth.UserRecord) {
   const isAnonymous = user.providerData.length === 0;
 
   const customUserClaims = {
