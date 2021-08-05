@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 
 import createNoteActionHandler from "./handlers/createNoteActionHandler";
 import onCreateUserHandler from "./handlers/onCreateUserHandler";
-import { actionWrapper } from "./utils/actionsHelpers";
+import { actionWrapper } from "./utils/actionsUtils";
 
 admin.initializeApp();
 

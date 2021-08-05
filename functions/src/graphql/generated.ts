@@ -433,6 +433,7 @@ export type Uuid_Comparison_Exp = {
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
   email: Scalars['String'];
+  username: Scalars['String'];
 }>;
 
 
@@ -486,10 +487,23 @@ export type UsersQuery = (
   )> }
 );
 
+export type UsernamesQueryVariables = Exact<{
+  like: Scalars['String'];
+}>;
+
+
+export type UsernamesQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'user' }
+    & Pick<User, 'username'>
+  )> }
+);
+
 
 export const CreateUserDocument = gql`
-    mutation CreateUser($id: String!, $email: String!) {
-  user: insert_user_one(object: {id: $id, email: $email, username: $email}) {
+    mutation CreateUser($id: String!, $email: String!, $username: String!) {
+  user: insert_user_one(object: {id: $id, email: $email, username: $username}) {
     createdAt: created_at
   }
 }
@@ -518,6 +532,13 @@ export const UsersDocument = gql`
   }
 }
     `;
+export const UsernamesDocument = gql`
+    query Usernames($like: String!) {
+  users: user(where: {username: {_ilike: $like}}) {
+    username
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -537,6 +558,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');
+    },
+    Usernames(variables: UsernamesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsernamesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UsernamesQuery>(UsernamesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Usernames');
     }
   };
 }

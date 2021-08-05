@@ -2,6 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 import { sdk } from "../graphql/client";
+import { generateUniqueUsername } from "../utils/usernameUtils";
 
 export default async function onCreateUserHandler(user: functions.auth.UserRecord) {
   const isAnonymous = user.providerData.length === 0;
@@ -21,8 +22,11 @@ export default async function onCreateUserHandler(user: functions.auth.UserRecor
     return;
   }
 
+  const username = await generateUniqueUsername(user.email as string);
+
   return sdk.CreateUser({
     id: user.uid,
     email: user.email as string,
+    username: username,
   });
 }

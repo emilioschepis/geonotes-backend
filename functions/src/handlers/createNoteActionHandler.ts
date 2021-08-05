@@ -1,6 +1,6 @@
 import { sdk } from "../graphql/client";
 import { CreateNoteActionMutation, CreateNoteActionMutationVariables } from "../graphql/generated";
-import { ActionHandler } from "../utils/actionsHelpers";
+import { ActionHandler } from "../utils/actionsUtils";
 
 type Action = ActionHandler<CreateNoteActionMutationVariables, CreateNoteActionMutation["create_note"]>;
 

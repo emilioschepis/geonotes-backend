@@ -4,3 +4,9 @@ query Users {
     email
   }
 }
+
+query Usernames($like: String!) {
+  users: user(where: { username: { _ilike: $like } }) {
+    username
+  }
+}
