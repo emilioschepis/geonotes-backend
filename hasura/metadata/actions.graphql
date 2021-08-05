@@ -1,0 +1,12 @@
+type Mutation {
+  create_note (
+    content: String!
+    latitude: Float!
+    longitude: Float!
+  ): CreateNoteOutput!
+}
+
+type CreateNoteOutput {
+  note_id : uuid!
+}
+
