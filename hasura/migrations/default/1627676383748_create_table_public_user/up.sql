@@ -1,1 +1,0 @@
-CREATE TABLE "public"."user" ("id" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "username" text NOT NULL, "email" text NOT NULL, PRIMARY KEY ("id") , UNIQUE ("username"), UNIQUE ("email"));
