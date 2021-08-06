@@ -1,0 +1,28 @@
+name: Production CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  hasura:
+    name: Deploy changes to Hasura
+    runs-on: ubuntu-latest
+    environment: Production
+    env:
+      HASURA_CLI_VERSION: "v2.0.4"
+      HASURA_GRAPHQL_ENDPOINT: "https://geonotes-prod.herokuapp.com"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download Hasura CLI
+        run: |
+          curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+          sudo hasura update-cli --version ${HASURA_CLI_VERSION}
+      - name: Apply migrations and metadata
+        working-directory: hasura
+        run: |
+          hasura metadata apply --endpoint=${HASURA_GRAPHQL_ENDPOINT} --admin-secret=${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }} 
+          hasura migrate apply --all-databases --endpoint=${HASURA_GRAPHQL_ENDPOINT} --admin-secret=${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
+          hasura metadata reload --endpoint=${HASURA_GRAPHQL_ENDPOINT} --admin-secret=${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
