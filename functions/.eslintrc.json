@@ -7,5 +7,5 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "simple-import-sort/imports": "error"
   },
-  "ignorePatterns": ["lib/"]
+  "ignorePatterns": ["lib/", "src/graphql/generated.ts"]
 }
