@@ -22,7 +22,9 @@ select_permissions:
     - user_id
     - created_at
     - id
-    filter: {}
+    filter:
+      deleted_at:
+        _is_null: true
   role: anonymous
 - permission:
     columns:
@@ -40,5 +42,19 @@ select_permissions:
     - user_id
     - created_at
     - id
-    filter: {}
+    filter:
+      deleted_at:
+        _is_null: true
+  role: user
+update_permissions:
+- permission:
+    check: {}
+    columns:
+    - deleted_at
+    filter:
+      _and:
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - deleted_at:
+          _is_null: true
   role: user
