@@ -1,0 +1,43 @@
+table:
+  name: note_view
+  schema: public
+object_relationships:
+- name: note
+  using:
+    foreign_key_constraint_on: note_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - note_id
+    - user_id
+  role: backend
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - note_id
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - note_id
+    - user_id
+    - created_at
+    filter: {}
+  role: backend
+- permission:
+    allow_aggregations: true
+    columns:
+    - note_id
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - note_id
+    - user_id
+    filter: {}
+  role: backend

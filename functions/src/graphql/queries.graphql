@@ -1,3 +1,9 @@
+query GetNoteAction($note_id: uuid!) {
+  get_note(note_id: $note_id) {
+    note_id
+  }
+}
+
 query Users {
   users: user {
     id

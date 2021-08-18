@@ -2,6 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 import createNoteActionHandler from "./handlers/createNoteActionHandler";
+import getNoteActionHandler from "./handlers/getNoteActionHandler";
 import onCreateUserHandler from "./handlers/onCreateUserHandler";
 import { actionWrapper } from "./utils/actionsUtils";
 
@@ -14,3 +15,4 @@ export const onCreateUser = builder.auth.user().onCreate(onCreateUserHandler);
 // Actions
 
 export const createNoteAction = builder.https.onRequest(actionWrapper(createNoteActionHandler));
+export const getNoteAction = builder.https.onRequest(actionWrapper(getNoteActionHandler));

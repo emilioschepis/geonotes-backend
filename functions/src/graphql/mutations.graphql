@@ -17,3 +17,12 @@ mutation CreateNote($user_id: String!, $content: String!, $latitude: Float!, $lo
     id
   }
 }
+
+mutation RegisterView($user_id: String!, $note_id: uuid!) {
+  view: insert_note_view_one(
+    object: { user_id: $user_id, note_id: $note_id }
+    on_conflict: { constraint: note_view_pkey, update_columns: [] }
+  ) {
+    note_id
+  }
+}

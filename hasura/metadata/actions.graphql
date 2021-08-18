@@ -6,7 +6,17 @@ type Mutation {
   ): CreateNoteOutput!
 }
 
+type Query {
+  get_note (
+    note_id: uuid!
+  ): GetNoteOutput!
+}
+
 type CreateNoteOutput {
+  note_id : uuid!
+}
+
+type GetNoteOutput {
   note_id : uuid!
 }
 

@@ -26,6 +26,13 @@ export type CreateNoteOutput = {
   note_id: Scalars['uuid'];
 };
 
+export type GetNoteOutput = {
+  __typename?: 'GetNoteOutput';
+  /** An object relationship */
+  note: Note;
+  note_id: Scalars['uuid'];
+};
+
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
@@ -129,10 +136,18 @@ export type Mutation_Root = {
   insert_note?: Maybe<Note_Mutation_Response>;
   /** insert a single row into the table: "note" */
   insert_note_one?: Maybe<Note>;
+  /** insert data into the table: "note_view" */
+  insert_note_view?: Maybe<Note_View_Mutation_Response>;
+  /** insert a single row into the table: "note_view" */
+  insert_note_view_one?: Maybe<Note_View>;
   /** insert data into the table: "user" */
   insert_user?: Maybe<User_Mutation_Response>;
   /** insert a single row into the table: "user" */
   insert_user_one?: Maybe<User>;
+  /** update data of the table: "note_view" */
+  update_note_view?: Maybe<Note_View_Mutation_Response>;
+  /** update single row of the table: "note_view" */
+  update_note_view_by_pk?: Maybe<Note_View>;
 };
 
 
@@ -157,6 +172,20 @@ export type Mutation_RootInsert_Note_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Note_ViewArgs = {
+  objects: Array<Note_View_Insert_Input>;
+  on_conflict?: Maybe<Note_View_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Note_View_OneArgs = {
+  object: Note_View_Insert_Input;
+  on_conflict?: Maybe<Note_View_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_UserArgs = {
   objects: Array<User_Insert_Input>;
 };
@@ -165,6 +194,20 @@ export type Mutation_RootInsert_UserArgs = {
 /** mutation root */
 export type Mutation_RootInsert_User_OneArgs = {
   object: User_Insert_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Note_ViewArgs = {
+  _set?: Maybe<Note_View_Set_Input>;
+  where: Note_View_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Note_View_By_PkArgs = {
+  _set?: Maybe<Note_View_Set_Input>;
+  pk_columns: Note_View_Pk_Columns_Input;
 };
 
 /** columns and relationships of "note" */
@@ -177,6 +220,18 @@ export type Note = {
   /** An object relationship */
   user: User;
   user_id: Scalars['String'];
+  /** An array relationship */
+  views: Array<Note_View>;
+};
+
+
+/** columns and relationships of "note" */
+export type NoteViewsArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
 };
 
 /** Boolean expression to filter rows from the table "note". All fields are combined with a logical 'AND'. */
@@ -190,6 +245,7 @@ export type Note_Bool_Exp = {
   location?: Maybe<Geography_Comparison_Exp>;
   user?: Maybe<User_Bool_Exp>;
   user_id?: Maybe<String_Comparison_Exp>;
+  views?: Maybe<Note_View_Bool_Exp>;
 };
 
 /** input type for inserting data into table "note" */
@@ -198,6 +254,7 @@ export type Note_Insert_Input = {
   location?: Maybe<Scalars['geography']>;
   user?: Maybe<User_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['String']>;
+  views?: Maybe<Note_View_Arr_Rel_Insert_Input>;
 };
 
 /** response of any mutation on the table "note" */
@@ -209,6 +266,11 @@ export type Note_Mutation_Response = {
   returning: Array<Note>;
 };
 
+/** input type for inserting object relation for remote table "note" */
+export type Note_Obj_Rel_Insert_Input = {
+  data: Note_Insert_Input;
+};
+
 /** Ordering options when selecting data from "note". */
 export type Note_Order_By = {
   content?: Maybe<Order_By>;
@@ -217,6 +279,7 @@ export type Note_Order_By = {
   location?: Maybe<Order_By>;
   user?: Maybe<User_Order_By>;
   user_id?: Maybe<Order_By>;
+  views_aggregate?: Maybe<Note_View_Aggregate_Order_By>;
 };
 
 /** select columns of table "note" */
@@ -229,6 +292,122 @@ export enum Note_Select_Column {
   Id = 'id',
   /** column name */
   Location = 'location',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** columns and relationships of "note_view" */
+export type Note_View = {
+  __typename?: 'note_view';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  note: Note;
+  note_id: Scalars['uuid'];
+  user_id: Scalars['String'];
+};
+
+/** order by aggregate values of table "note_view" */
+export type Note_View_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Note_View_Max_Order_By>;
+  min?: Maybe<Note_View_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "note_view" */
+export type Note_View_Arr_Rel_Insert_Input = {
+  data: Array<Note_View_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Note_View_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "note_view". All fields are combined with a logical 'AND'. */
+export type Note_View_Bool_Exp = {
+  _and?: Maybe<Array<Note_View_Bool_Exp>>;
+  _not?: Maybe<Note_View_Bool_Exp>;
+  _or?: Maybe<Array<Note_View_Bool_Exp>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  note?: Maybe<Note_Bool_Exp>;
+  note_id?: Maybe<Uuid_Comparison_Exp>;
+  user_id?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "note_view" */
+export enum Note_View_Constraint {
+  /** unique or primary key constraint */
+  NoteViewPkey = 'note_view_pkey'
+}
+
+/** input type for inserting data into table "note_view" */
+export type Note_View_Insert_Input = {
+  note?: Maybe<Note_Obj_Rel_Insert_Input>;
+  note_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "note_view" */
+export type Note_View_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** order by min() on columns of table "note_view" */
+export type Note_View_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "note_view" */
+export type Note_View_Mutation_Response = {
+  __typename?: 'note_view_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Note_View>;
+};
+
+/** on conflict condition type for table "note_view" */
+export type Note_View_On_Conflict = {
+  constraint: Note_View_Constraint;
+  update_columns?: Array<Note_View_Update_Column>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "note_view". */
+export type Note_View_Order_By = {
+  created_at?: Maybe<Order_By>;
+  note?: Maybe<Note_Order_By>;
+  note_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: note_view */
+export type Note_View_Pk_Columns_Input = {
+  note_id: Scalars['uuid'];
+  user_id: Scalars['String'];
+};
+
+/** select columns of table "note_view" */
+export enum Note_View_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  NoteId = 'note_id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "note_view" */
+export type Note_View_Set_Input = {
+  note_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "note_view" */
+export enum Note_View_Update_Column {
+  /** column name */
+  NoteId = 'note_id',
   /** column name */
   UserId = 'user_id'
 }
@@ -251,14 +430,24 @@ export enum Order_By {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  get_note: GetNoteOutput;
   /** fetch data from the table: "note" */
   note: Array<Note>;
   /** fetch data from the table: "note" using primary key columns */
   note_by_pk?: Maybe<Note>;
+  /** fetch data from the table: "note_view" */
+  note_view: Array<Note_View>;
+  /** fetch data from the table: "note_view" using primary key columns */
+  note_view_by_pk?: Maybe<Note_View>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch data from the table: "user" using primary key columns */
   user_by_pk?: Maybe<User>;
+};
+
+
+export type Query_RootGet_NoteArgs = {
+  note_id: Scalars['uuid'];
 };
 
 
@@ -273,6 +462,21 @@ export type Query_RootNoteArgs = {
 
 export type Query_RootNote_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootNote_ViewArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+
+export type Query_RootNote_View_By_PkArgs = {
+  note_id: Scalars['uuid'];
+  user_id: Scalars['String'];
 };
 
 
@@ -306,6 +510,10 @@ export type Subscription_Root = {
   note: Array<Note>;
   /** fetch data from the table: "note" using primary key columns */
   note_by_pk?: Maybe<Note>;
+  /** fetch data from the table: "note_view" */
+  note_view: Array<Note_View>;
+  /** fetch data from the table: "note_view" using primary key columns */
+  note_view_by_pk?: Maybe<Note_View>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch data from the table: "user" using primary key columns */
@@ -324,6 +532,21 @@ export type Subscription_RootNoteArgs = {
 
 export type Subscription_RootNote_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootNote_ViewArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+
+export type Subscription_RootNote_View_By_PkArgs = {
+  note_id: Scalars['uuid'];
+  user_id: Scalars['String'];
 };
 
 
@@ -475,6 +698,33 @@ export type CreateNoteMutation = (
   )> }
 );
 
+export type RegisterViewMutationVariables = Exact<{
+  user_id: Scalars['String'];
+  note_id: Scalars['uuid'];
+}>;
+
+
+export type RegisterViewMutation = (
+  { __typename?: 'mutation_root' }
+  & { view?: Maybe<(
+    { __typename?: 'note_view' }
+    & Pick<Note_View, 'note_id'>
+  )> }
+);
+
+export type GetNoteActionQueryVariables = Exact<{
+  note_id: Scalars['uuid'];
+}>;
+
+
+export type GetNoteActionQuery = (
+  { __typename?: 'query_root' }
+  & { get_note: (
+    { __typename?: 'GetNoteOutput' }
+    & Pick<GetNoteOutput, 'note_id'>
+  ) }
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -523,6 +773,23 @@ export const CreateNoteDocument = gql`
   }
 }
     `;
+export const RegisterViewDocument = gql`
+    mutation RegisterView($user_id: String!, $note_id: uuid!) {
+  view: insert_note_view_one(
+    object: {user_id: $user_id, note_id: $note_id}
+    on_conflict: {constraint: note_view_pkey, update_columns: []}
+  ) {
+    note_id
+  }
+}
+    `;
+export const GetNoteActionDocument = gql`
+    query GetNoteAction($note_id: uuid!) {
+  get_note(note_id: $note_id) {
+    note_id
+  }
+}
+    `;
 export const UsersDocument = gql`
     query Users {
   users: user {
@@ -554,6 +821,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     CreateNote(variables: CreateNoteMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNoteMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNoteMutation>(CreateNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateNote');
+    },
+    RegisterView(variables: RegisterViewMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterViewMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterViewMutation>(RegisterViewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterView');
+    },
+    GetNoteAction(variables: GetNoteActionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNoteActionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNoteActionQuery>(GetNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetNoteAction');
     },
     Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');

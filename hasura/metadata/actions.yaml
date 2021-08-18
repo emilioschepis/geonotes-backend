@@ -7,11 +7,29 @@ actions:
   permissions:
   - role: user
   - role: backend
+- name: get_note
+  definition:
+    kind: ""
+    handler: '{{ACTIONS_BASE_URL}}/getNoteAction'
+  permissions:
+  - role: anonymous
+  - role: backend
+  - role: user
 custom_types:
   enums: []
   input_objects: []
   objects:
   - name: CreateNoteOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: note
+      name: note
+      source: default
+      type: object
+      field_mapping:
+        note_id: id
+  - name: GetNoteOutput
     relationships:
     - remote_table:
         schema: public

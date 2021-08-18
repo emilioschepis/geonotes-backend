@@ -1,0 +1,1 @@
+CREATE TABLE "public"."note_view" ("note_id" uuid NOT NULL, "user_id" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("note_id","user_id") , FOREIGN KEY ("note_id") REFERENCES "public"."note"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON UPDATE restrict ON DELETE cascade);
