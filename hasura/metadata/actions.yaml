@@ -11,6 +11,7 @@ actions:
   definition:
     kind: ""
     handler: '{{ACTIONS_BASE_URL}}/getNoteAction'
+    forward_client_headers: true
   permissions:
   - role: anonymous
   - role: backend
@@ -28,15 +29,6 @@ custom_types:
       source: default
       type: object
       field_mapping:
-        note_id: id
+        id: id
   - name: GetNoteOutput
-    relationships:
-    - remote_table:
-        schema: public
-        name: note
-      name: note
-      source: default
-      type: object
-      field_mapping:
-        note_id: id
   scalars: []

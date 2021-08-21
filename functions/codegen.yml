@@ -5,6 +5,7 @@ schema:
         "X-Hasura-Admin-Secret": ${HASURA_GRAPHQL_ADMIN_SECRET}
         "X-Hasura-Role": "backend"
 documents:
+  - src/graphql/**/actions.graphql
   - src/graphql/**/queries.graphql
   - src/graphql/**/mutations.graphql
 generates:

@@ -8,15 +8,19 @@ type Mutation {
 
 type Query {
   get_note (
-    note_id: uuid!
+    id: uuid!
   ): GetNoteOutput!
 }
 
 type CreateNoteOutput {
-  note_id : uuid!
+  id : uuid!
 }
 
 type GetNoteOutput {
-  note_id : uuid!
+  id : uuid!
+  created_at : timestamptz!
+  content : String!
+  username : String!
+  view_count : Int!
 }
 

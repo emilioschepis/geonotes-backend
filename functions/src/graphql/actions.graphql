@@ -1,0 +1,15 @@
+query GetNoteAction($id: uuid!) {
+  get_note(id: $id) {
+    id
+    created_at
+    content
+    username
+    view_count
+  }
+}
+
+mutation CreateNoteAction($content: String!, $latitude: Float!, $longitude: Float!) {
+  create_note(content: $content, latitude: $latitude, longitude: $longitude) {
+    id
+  }
+}

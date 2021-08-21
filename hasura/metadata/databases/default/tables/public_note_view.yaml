@@ -18,11 +18,6 @@ select_permissions:
     allow_aggregations: true
     columns:
     - note_id
-    filter: {}
-  role: anonymous
-- permission:
-    columns:
-    - note_id
     - user_id
     - created_at
     filter: {}
@@ -30,8 +25,12 @@ select_permissions:
 - permission:
     allow_aggregations: true
     columns:
+    - created_at
     - note_id
-    filter: {}
+    filter:
+      note:
+        user_id:
+          _eq: X-Hasura-User-Id
   role: user
 update_permissions:
 - permission:

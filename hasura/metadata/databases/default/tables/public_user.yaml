@@ -13,9 +13,13 @@ insert_permissions:
 select_permissions:
 - permission:
     columns:
+    - email
     - id
     - username
-    filter: {}
+    - created_at
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
   role: anonymous
 - permission:
     columns:
@@ -28,6 +32,10 @@ select_permissions:
 - permission:
     columns:
     - id
+    - email
     - username
-    filter: {}
+    - created_at
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
   role: user

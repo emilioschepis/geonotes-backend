@@ -12,7 +12,7 @@ const createNoteActionHandler: Action = async (userId, params, sendOutput) => {
     longitude: params.longitude,
   });
 
-  return sendOutput({ note_id: note?.id });
+  return sendOutput({ id: note?.id });
 };
 
 export default createNoteActionHandler;

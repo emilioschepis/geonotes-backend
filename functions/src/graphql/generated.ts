@@ -21,16 +21,18 @@ export type Scalars = {
 
 export type CreateNoteOutput = {
   __typename?: 'CreateNoteOutput';
+  id: Scalars['uuid'];
   /** An object relationship */
   note: Note;
-  note_id: Scalars['uuid'];
 };
 
 export type GetNoteOutput = {
   __typename?: 'GetNoteOutput';
-  /** An object relationship */
-  note: Note;
-  note_id: Scalars['uuid'];
+  content: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  username: Scalars['String'];
+  view_count: Scalars['Int'];
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -222,11 +224,23 @@ export type Note = {
   user_id: Scalars['String'];
   /** An array relationship */
   views: Array<Note_View>;
+  /** An aggregate relationship */
+  views_aggregate: Note_View_Aggregate;
 };
 
 
 /** columns and relationships of "note" */
 export type NoteViewsArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+
+/** columns and relationships of "note" */
+export type NoteViews_AggregateArgs = {
   distinct_on?: Maybe<Array<Note_View_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -306,6 +320,28 @@ export type Note_View = {
   user_id: Scalars['String'];
 };
 
+/** aggregated selection of "note_view" */
+export type Note_View_Aggregate = {
+  __typename?: 'note_view_aggregate';
+  aggregate?: Maybe<Note_View_Aggregate_Fields>;
+  nodes: Array<Note_View>;
+};
+
+/** aggregate fields of "note_view" */
+export type Note_View_Aggregate_Fields = {
+  __typename?: 'note_view_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Note_View_Max_Fields>;
+  min?: Maybe<Note_View_Min_Fields>;
+};
+
+
+/** aggregate fields of "note_view" */
+export type Note_View_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Note_View_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
 /** order by aggregate values of table "note_view" */
 export type Note_View_Aggregate_Order_By = {
   count?: Maybe<Order_By>;
@@ -344,11 +380,27 @@ export type Note_View_Insert_Input = {
   user_id?: Maybe<Scalars['String']>;
 };
 
+/** aggregate max on columns */
+export type Note_View_Max_Fields = {
+  __typename?: 'note_view_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  note_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
+};
+
 /** order by max() on columns of table "note_view" */
 export type Note_View_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   user_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Note_View_Min_Fields = {
+  __typename?: 'note_view_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  note_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "note_view" */
@@ -437,6 +489,8 @@ export type Query_Root = {
   note_by_pk?: Maybe<Note>;
   /** fetch data from the table: "note_view" */
   note_view: Array<Note_View>;
+  /** fetch aggregated fields from the table: "note_view" */
+  note_view_aggregate: Note_View_Aggregate;
   /** fetch data from the table: "note_view" using primary key columns */
   note_view_by_pk?: Maybe<Note_View>;
   /** fetch data from the table: "user" */
@@ -447,7 +501,7 @@ export type Query_Root = {
 
 
 export type Query_RootGet_NoteArgs = {
-  note_id: Scalars['uuid'];
+  id: Scalars['uuid'];
 };
 
 
@@ -466,6 +520,15 @@ export type Query_RootNote_By_PkArgs = {
 
 
 export type Query_RootNote_ViewArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+
+export type Query_RootNote_View_AggregateArgs = {
   distinct_on?: Maybe<Array<Note_View_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -512,6 +575,8 @@ export type Subscription_Root = {
   note_by_pk?: Maybe<Note>;
   /** fetch data from the table: "note_view" */
   note_view: Array<Note_View>;
+  /** fetch aggregated fields from the table: "note_view" */
+  note_view_aggregate: Note_View_Aggregate;
   /** fetch data from the table: "note_view" using primary key columns */
   note_view_by_pk?: Maybe<Note_View>;
   /** fetch data from the table: "user" */
@@ -536,6 +601,15 @@ export type Subscription_RootNote_By_PkArgs = {
 
 
 export type Subscription_RootNote_ViewArgs = {
+  distinct_on?: Maybe<Array<Note_View_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Note_View_Order_By>>;
+  where?: Maybe<Note_View_Bool_Exp>;
+};
+
+
+export type Subscription_RootNote_View_AggregateArgs = {
   distinct_on?: Maybe<Array<Note_View_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -652,19 +726,17 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
-export type CreateUserMutationVariables = Exact<{
-  id: Scalars['String'];
-  email: Scalars['String'];
-  username: Scalars['String'];
+export type GetNoteActionQueryVariables = Exact<{
+  id: Scalars['uuid'];
 }>;
 
 
-export type CreateUserMutation = (
-  { __typename?: 'mutation_root' }
-  & { user?: Maybe<(
-    { __typename?: 'user' }
-    & { createdAt: User['created_at'] }
-  )> }
+export type GetNoteActionQuery = (
+  { __typename?: 'query_root' }
+  & { get_note: (
+    { __typename?: 'GetNoteOutput' }
+    & Pick<GetNoteOutput, 'id' | 'created_at' | 'content' | 'username' | 'view_count'>
+  ) }
 );
 
 export type CreateNoteActionMutationVariables = Exact<{
@@ -678,8 +750,23 @@ export type CreateNoteActionMutation = (
   { __typename?: 'mutation_root' }
   & { create_note: (
     { __typename?: 'CreateNoteOutput' }
-    & Pick<CreateNoteOutput, 'note_id'>
+    & Pick<CreateNoteOutput, 'id'>
   ) }
+);
+
+export type CreateUserMutationVariables = Exact<{
+  id: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
+}>;
+
+
+export type CreateUserMutation = (
+  { __typename?: 'mutation_root' }
+  & { user?: Maybe<(
+    { __typename?: 'user' }
+    & { createdAt: User['created_at'] }
+  )> }
 );
 
 export type CreateNoteMutationVariables = Exact<{
@@ -712,17 +799,27 @@ export type RegisterViewMutation = (
   )> }
 );
 
-export type GetNoteActionQueryVariables = Exact<{
-  note_id: Scalars['uuid'];
+export type NoteQueryVariables = Exact<{
+  id: Scalars['uuid'];
 }>;
 
 
-export type GetNoteActionQuery = (
+export type NoteQuery = (
   { __typename?: 'query_root' }
-  & { get_note: (
-    { __typename?: 'GetNoteOutput' }
-    & Pick<GetNoteOutput, 'note_id'>
-  ) }
+  & { note?: Maybe<(
+    { __typename?: 'note' }
+    & Pick<Note, 'id' | 'created_at' | 'content'>
+    & { user: (
+      { __typename?: 'user' }
+      & Pick<User, 'username'>
+    ), views_aggregate: (
+      { __typename?: 'note_view_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'note_view_aggregate_fields' }
+        & Pick<Note_View_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  )> }
 );
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -750,17 +847,28 @@ export type UsernamesQuery = (
 );
 
 
-export const CreateUserDocument = gql`
-    mutation CreateUser($id: String!, $email: String!, $username: String!) {
-  user: insert_user_one(object: {id: $id, email: $email, username: $username}) {
-    createdAt: created_at
+export const GetNoteActionDocument = gql`
+    query GetNoteAction($id: uuid!) {
+  get_note(id: $id) {
+    id
+    created_at
+    content
+    username
+    view_count
   }
 }
     `;
 export const CreateNoteActionDocument = gql`
     mutation CreateNoteAction($content: String!, $latitude: Float!, $longitude: Float!) {
   create_note(content: $content, latitude: $latitude, longitude: $longitude) {
-    note_id
+    id
+  }
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation CreateUser($id: String!, $email: String!, $username: String!) {
+  user: insert_user_one(object: {id: $id, email: $email, username: $username}) {
+    createdAt: created_at
   }
 }
     `;
@@ -783,10 +891,20 @@ export const RegisterViewDocument = gql`
   }
 }
     `;
-export const GetNoteActionDocument = gql`
-    query GetNoteAction($note_id: uuid!) {
-  get_note(note_id: $note_id) {
-    note_id
+export const NoteDocument = gql`
+    query Note($id: uuid!) {
+  note: note_by_pk(id: $id) {
+    id
+    created_at
+    content
+    user {
+      username
+    }
+    views_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 }
     `;
@@ -813,11 +931,14 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');
+    GetNoteAction(variables: GetNoteActionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNoteActionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNoteActionQuery>(GetNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetNoteAction');
     },
     CreateNoteAction(variables: CreateNoteActionMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNoteActionMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNoteActionMutation>(CreateNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateNoteAction');
+    },
+    CreateUser(variables: CreateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateUser');
     },
     CreateNote(variables: CreateNoteMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNoteMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNoteMutation>(CreateNoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateNote');
@@ -825,8 +946,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     RegisterView(variables: RegisterViewMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterViewMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterViewMutation>(RegisterViewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterView');
     },
-    GetNoteAction(variables: GetNoteActionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNoteActionQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetNoteActionQuery>(GetNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetNoteAction');
+    Note(variables: NoteQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<NoteQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<NoteQuery>(NoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Note');
     },
     Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');

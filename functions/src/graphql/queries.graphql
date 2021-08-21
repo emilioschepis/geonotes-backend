@@ -1,6 +1,16 @@
-query GetNoteAction($note_id: uuid!) {
-  get_note(note_id: $note_id) {
-    note_id
+query Note($id: uuid!) {
+  note: note_by_pk(id: $id) {
+    id
+    created_at
+    content
+    user {
+      username
+    }
+    views_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 }
 
