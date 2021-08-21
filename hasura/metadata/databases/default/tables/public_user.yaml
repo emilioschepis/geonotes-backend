@@ -17,16 +17,6 @@ select_permissions:
     - id
     - username
     - created_at
-    filter:
-      id:
-        _eq: X-Hasura-User-Id
-  role: anonymous
-- permission:
-    columns:
-    - email
-    - id
-    - username
-    - created_at
     filter: {}
   role: backend
 - permission:

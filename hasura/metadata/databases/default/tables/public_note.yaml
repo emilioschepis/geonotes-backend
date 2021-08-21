@@ -25,17 +25,6 @@ insert_permissions:
 select_permissions:
 - permission:
     columns:
-    - location
-    - content
-    - user_id
-    - created_at
-    - id
-    filter:
-      deleted_at:
-        _is_null: true
-  role: anonymous
-- permission:
-    columns:
     - content
     - created_at
     - deleted_at
@@ -52,8 +41,11 @@ select_permissions:
     - created_at
     - id
     filter:
-      deleted_at:
-        _is_null: true
+      _and:
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - deleted_at:
+          _is_null: true
   role: user
 update_permissions:
 - permission:
