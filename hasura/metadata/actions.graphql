@@ -12,6 +12,13 @@ type Query {
   ): GetNoteOutput!
 }
 
+type Query {
+  get_notes (
+    latitude: Float!
+    longitude: Float!
+  ): [GetNotesOutput!]!
+}
+
 type CreateNoteOutput {
   id : uuid!
 }
@@ -22,5 +29,12 @@ type GetNoteOutput {
   content : String!
   username : String!
   view_count : Int!
+}
+
+type GetNotesOutput {
+  id : uuid!
+  latitude : Float!
+  longitude : Float!
+  content : String!
 }
 

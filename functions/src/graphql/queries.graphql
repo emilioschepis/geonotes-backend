@@ -14,6 +14,23 @@ query Note($id: uuid!) {
   }
 }
 
+query Notes($latitude: Float!, $longitude: Float!, $distance: Float!) {
+  notes: note(
+    where: {
+      _and: {
+        location: {
+          _st_d_within: { distance: $distance, from: { type: "Point", coordinates: [$longitude, $latitude] } }
+        }
+      }
+      deleted_at: { _is_null: true }
+    }
+  ) {
+    id
+    content
+    location
+  }
+}
+
 query Users {
   users: user {
     id

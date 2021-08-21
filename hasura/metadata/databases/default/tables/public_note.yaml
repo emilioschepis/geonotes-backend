@@ -36,11 +36,12 @@ select_permissions:
   role: anonymous
 - permission:
     columns:
-    - location
     - content
-    - user_id
     - created_at
+    - deleted_at
     - id
+    - location
+    - user_id
     filter: {}
   role: backend
 - permission:

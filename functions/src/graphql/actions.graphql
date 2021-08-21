@@ -8,6 +8,15 @@ query GetNoteAction($id: uuid!) {
   }
 }
 
+query GetNotesAction($latitude: Float!, $longitude: Float!) {
+  get_notes(latitude: $latitude, longitude: $longitude) {
+    id
+    latitude
+    longitude
+    content
+  }
+}
+
 mutation CreateNoteAction($content: String!, $latitude: Float!, $longitude: Float!) {
   create_note(content: $content, latitude: $latitude, longitude: $longitude) {
     id

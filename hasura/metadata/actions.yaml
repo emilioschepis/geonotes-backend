@@ -16,6 +16,14 @@ actions:
   - role: anonymous
   - role: backend
   - role: user
+- name: get_notes
+  definition:
+    kind: ""
+    handler: '{{ACTIONS_BASE_URL}}/getNotesAction'
+  permissions:
+  - role: backend
+  - role: anonymous
+  - role: user
 custom_types:
   enums: []
   input_objects: []
@@ -31,4 +39,5 @@ custom_types:
       field_mapping:
         id: id
   - name: GetNoteOutput
+  - name: GetNotesOutput
   scalars: []

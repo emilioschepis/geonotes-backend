@@ -35,6 +35,14 @@ export type GetNoteOutput = {
   view_count: Scalars['Int'];
 };
 
+export type GetNotesOutput = {
+  __typename?: 'GetNotesOutput';
+  content: Scalars['String'];
+  id: Scalars['uuid'];
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
+};
+
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
@@ -217,6 +225,7 @@ export type Note = {
   __typename?: 'note';
   content: Scalars['String'];
   created_at: Scalars['timestamptz'];
+  deleted_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['uuid'];
   location: Scalars['geography'];
   /** An object relationship */
@@ -255,6 +264,7 @@ export type Note_Bool_Exp = {
   _or?: Maybe<Array<Note_Bool_Exp>>;
   content?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  deleted_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   location?: Maybe<Geography_Comparison_Exp>;
   user?: Maybe<User_Bool_Exp>;
@@ -289,6 +299,7 @@ export type Note_Obj_Rel_Insert_Input = {
 export type Note_Order_By = {
   content?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  deleted_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   location?: Maybe<Order_By>;
   user?: Maybe<User_Order_By>;
@@ -302,6 +313,8 @@ export enum Note_Select_Column {
   Content = 'content',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  DeletedAt = 'deleted_at',
   /** column name */
   Id = 'id',
   /** column name */
@@ -483,6 +496,7 @@ export enum Order_By {
 export type Query_Root = {
   __typename?: 'query_root';
   get_note: GetNoteOutput;
+  get_notes: Array<GetNotesOutput>;
   /** fetch data from the table: "note" */
   note: Array<Note>;
   /** fetch data from the table: "note" using primary key columns */
@@ -502,6 +516,12 @@ export type Query_Root = {
 
 export type Query_RootGet_NoteArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootGet_NotesArgs = {
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
 };
 
 
@@ -739,6 +759,20 @@ export type GetNoteActionQuery = (
   ) }
 );
 
+export type GetNotesActionQueryVariables = Exact<{
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
+}>;
+
+
+export type GetNotesActionQuery = (
+  { __typename?: 'query_root' }
+  & { get_notes: Array<(
+    { __typename?: 'GetNotesOutput' }
+    & Pick<GetNotesOutput, 'id' | 'latitude' | 'longitude' | 'content'>
+  )> }
+);
+
 export type CreateNoteActionMutationVariables = Exact<{
   content: Scalars['String'];
   latitude: Scalars['Float'];
@@ -822,6 +856,21 @@ export type NoteQuery = (
   )> }
 );
 
+export type NotesQueryVariables = Exact<{
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
+  distance: Scalars['Float'];
+}>;
+
+
+export type NotesQuery = (
+  { __typename?: 'query_root' }
+  & { notes: Array<(
+    { __typename?: 'note' }
+    & Pick<Note, 'id' | 'content' | 'location'>
+  )> }
+);
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -855,6 +904,16 @@ export const GetNoteActionDocument = gql`
     content
     username
     view_count
+  }
+}
+    `;
+export const GetNotesActionDocument = gql`
+    query GetNotesAction($latitude: Float!, $longitude: Float!) {
+  get_notes(latitude: $latitude, longitude: $longitude) {
+    id
+    latitude
+    longitude
+    content
   }
 }
     `;
@@ -908,6 +967,17 @@ export const NoteDocument = gql`
   }
 }
     `;
+export const NotesDocument = gql`
+    query Notes($latitude: Float!, $longitude: Float!, $distance: Float!) {
+  notes: note(
+    where: {_and: {location: {_st_d_within: {distance: $distance, from: {type: "Point", coordinates: [$longitude, $latitude]}}}}, deleted_at: {_is_null: true}}
+  ) {
+    id
+    content
+    location
+  }
+}
+    `;
 export const UsersDocument = gql`
     query Users {
   users: user {
@@ -934,6 +1004,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetNoteAction(variables: GetNoteActionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNoteActionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNoteActionQuery>(GetNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetNoteAction');
     },
+    GetNotesAction(variables: GetNotesActionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNotesActionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNotesActionQuery>(GetNotesActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetNotesAction');
+    },
     CreateNoteAction(variables: CreateNoteActionMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateNoteActionMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateNoteActionMutation>(CreateNoteActionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateNoteAction');
     },
@@ -948,6 +1021,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Note(variables: NoteQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<NoteQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<NoteQuery>(NoteDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Note');
+    },
+    Notes(variables: NotesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<NotesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<NotesQuery>(NotesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Notes');
     },
     Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');
