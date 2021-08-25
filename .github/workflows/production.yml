@@ -61,4 +61,4 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Deploy
-        run: firebase deploy --only functions
+        run: firebase deploy

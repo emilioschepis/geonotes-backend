@@ -758,13 +758,7 @@ export type GetNoteActionQueryVariables = Exact<{
 }>;
 
 
-export type GetNoteActionQuery = (
-  { __typename?: 'query_root' }
-  & { get_note: (
-    { __typename?: 'GetNoteOutput' }
-    & Pick<GetNoteOutput, 'id' | 'created_at' | 'content' | 'username' | 'view_count'>
-  ) }
-);
+export type GetNoteActionQuery = { __typename?: 'query_root', get_note: { __typename?: 'GetNoteOutput', id: any, created_at: any, content: string, username: string, view_count: number } };
 
 export type GetNotesActionQueryVariables = Exact<{
   latitude: Scalars['Float'];
@@ -772,13 +766,7 @@ export type GetNotesActionQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesActionQuery = (
-  { __typename?: 'query_root' }
-  & { get_notes: Array<(
-    { __typename?: 'GetNotesOutput' }
-    & Pick<GetNotesOutput, 'id' | 'latitude' | 'longitude' | 'content'>
-  )> }
-);
+export type GetNotesActionQuery = { __typename?: 'query_root', get_notes: Array<{ __typename?: 'GetNotesOutput', id: any, latitude: number, longitude: number, content: string }> };
 
 export type CreateNoteActionMutationVariables = Exact<{
   content: Scalars['String'];
@@ -787,13 +775,7 @@ export type CreateNoteActionMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteActionMutation = (
-  { __typename?: 'mutation_root' }
-  & { create_note: (
-    { __typename?: 'CreateNoteOutput' }
-    & Pick<CreateNoteOutput, 'id'>
-  ) }
-);
+export type CreateNoteActionMutation = { __typename?: 'mutation_root', create_note: { __typename?: 'CreateNoteOutput', id: any } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
@@ -802,13 +784,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = (
-  { __typename?: 'mutation_root' }
-  & { user?: Maybe<(
-    { __typename?: 'user' }
-    & { createdAt: User['created_at'] }
-  )> }
-);
+export type CreateUserMutation = { __typename?: 'mutation_root', user?: Maybe<{ __typename?: 'user', createdAt: any }> };
 
 export type CreateNoteMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -820,13 +796,7 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = (
-  { __typename?: 'mutation_root' }
-  & { note?: Maybe<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id'>
-  )> }
-);
+export type CreateNoteMutation = { __typename?: 'mutation_root', note?: Maybe<{ __typename?: 'note', id: any }> };
 
 export type RegisterViewMutationVariables = Exact<{
   user_id: Scalars['String'];
@@ -834,36 +804,14 @@ export type RegisterViewMutationVariables = Exact<{
 }>;
 
 
-export type RegisterViewMutation = (
-  { __typename?: 'mutation_root' }
-  & { view?: Maybe<(
-    { __typename?: 'note_view' }
-    & Pick<Note_View, 'note_id'>
-  )> }
-);
+export type RegisterViewMutation = { __typename?: 'mutation_root', view?: Maybe<{ __typename?: 'note_view', note_id: any }> };
 
 export type NoteQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type NoteQuery = (
-  { __typename?: 'query_root' }
-  & { note?: Maybe<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id' | 'created_at' | 'content'>
-    & { user: (
-      { __typename?: 'user' }
-      & Pick<User, 'username'>
-    ), views_aggregate: (
-      { __typename?: 'note_view_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'note_view_aggregate_fields' }
-        & Pick<Note_View_Aggregate_Fields, 'count'>
-      )> }
-    ) }
-  )> }
-);
+export type NoteQuery = { __typename?: 'query_root', note?: Maybe<{ __typename?: 'note', id: any, created_at: any, content: string, user: { __typename?: 'user', username: string }, views_aggregate: { __typename?: 'note_view_aggregate', aggregate?: Maybe<{ __typename?: 'note_view_aggregate_fields', count: number }> } }> };
 
 export type NotesQueryVariables = Exact<{
   latitude: Scalars['Float'];
@@ -872,37 +820,19 @@ export type NotesQueryVariables = Exact<{
 }>;
 
 
-export type NotesQuery = (
-  { __typename?: 'query_root' }
-  & { notes: Array<(
-    { __typename?: 'note' }
-    & Pick<Note, 'id' | 'content' | 'location'>
-  )> }
-);
+export type NotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'note', id: any, content: string, location: any }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = (
-  { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'user' }
-    & Pick<User, 'id' | 'email'>
-  )> }
-);
+export type UsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'user', id: string, email: string }> };
 
 export type UsernamesQueryVariables = Exact<{
   like: Scalars['String'];
 }>;
 
 
-export type UsernamesQuery = (
-  { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'user' }
-    & Pick<User, 'username'>
-  )> }
-);
+export type UsernamesQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'user', username: string }> };
 
 
 export const GetNoteActionDocument = gql`
