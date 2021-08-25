@@ -228,6 +228,7 @@ export type Note = {
   deleted_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['uuid'];
   location: Scalars['geography'];
+  map_image_url?: Maybe<Scalars['String']>;
   /** An object relationship */
   user: User;
   user_id: Scalars['String'];
@@ -267,6 +268,7 @@ export type Note_Bool_Exp = {
   deleted_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   location?: Maybe<Geography_Comparison_Exp>;
+  map_image_url?: Maybe<String_Comparison_Exp>;
   user?: Maybe<User_Bool_Exp>;
   user_id?: Maybe<String_Comparison_Exp>;
   views?: Maybe<Note_View_Bool_Exp>;
@@ -275,7 +277,9 @@ export type Note_Bool_Exp = {
 /** input type for inserting data into table "note" */
 export type Note_Insert_Input = {
   content?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   location?: Maybe<Scalars['geography']>;
+  map_image_url?: Maybe<Scalars['String']>;
   user?: Maybe<User_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['String']>;
   views?: Maybe<Note_View_Arr_Rel_Insert_Input>;
@@ -302,6 +306,7 @@ export type Note_Order_By = {
   deleted_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   location?: Maybe<Order_By>;
+  map_image_url?: Maybe<Order_By>;
   user?: Maybe<User_Order_By>;
   user_id?: Maybe<Order_By>;
   views_aggregate?: Maybe<Note_View_Aggregate_Order_By>;
@@ -319,6 +324,8 @@ export enum Note_Select_Column {
   Id = 'id',
   /** column name */
   Location = 'location',
+  /** column name */
+  MapImageUrl = 'map_image_url',
   /** column name */
   UserId = 'user_id'
 }
@@ -804,10 +811,12 @@ export type CreateUserMutation = (
 );
 
 export type CreateNoteMutationVariables = Exact<{
+  id: Scalars['uuid'];
   user_id: Scalars['String'];
   content: Scalars['String'];
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
+  map_image_url?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -932,9 +941,9 @@ export const CreateUserDocument = gql`
 }
     `;
 export const CreateNoteDocument = gql`
-    mutation CreateNote($user_id: String!, $content: String!, $latitude: Float!, $longitude: Float!) {
+    mutation CreateNote($id: uuid!, $user_id: String!, $content: String!, $latitude: Float!, $longitude: Float!, $map_image_url: String) {
   note: insert_note_one(
-    object: {user_id: $user_id, content: $content, location: {type: "Point", coordinates: [$longitude, $latitude]}}
+    object: {id: $id, user_id: $user_id, content: $content, location: {type: "Point", coordinates: [$longitude, $latitude]}, map_image_url: $map_image_url}
   ) {
     id
   }

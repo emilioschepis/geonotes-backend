@@ -4,9 +4,22 @@ mutation CreateUser($id: String!, $email: String!, $username: String!) {
   }
 }
 
-mutation CreateNote($user_id: String!, $content: String!, $latitude: Float!, $longitude: Float!) {
+mutation CreateNote(
+  $id: uuid!
+  $user_id: String!
+  $content: String!
+  $latitude: Float!
+  $longitude: Float!
+  $map_image_url: String
+) {
   note: insert_note_one(
-    object: { user_id: $user_id, content: $content, location: { type: "Point", coordinates: [$longitude, $latitude] } }
+    object: {
+      id: $id
+      user_id: $user_id
+      content: $content
+      location: { type: "Point", coordinates: [$longitude, $latitude] }
+      map_image_url: $map_image_url
+    }
   ) {
     id
   }

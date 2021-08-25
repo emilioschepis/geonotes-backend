@@ -19,7 +19,9 @@ insert_permissions:
     check: {}
     columns:
     - content
+    - id
     - location
+    - map_image_url
     - user_id
   role: backend
 select_permissions:
@@ -30,17 +32,19 @@ select_permissions:
     - deleted_at
     - id
     - location
+    - map_image_url
     - user_id
     filter: {}
   role: backend
 - permission:
     allow_aggregations: true
     columns:
-    - location
     - content
-    - user_id
     - created_at
     - id
+    - location
+    - map_image_url
+    - user_id
     filter:
       _and:
       - user_id:
