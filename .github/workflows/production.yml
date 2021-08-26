@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     env:
-      HASURA_CLI_VERSION: "v2.0.4"
-      HASURA_GRAPHQL_ENDPOINT: "https://geonotes-prod.herokuapp.com"
+      HASURA_CLI_VERSION: "v2.0.7"
+      HASURA_GRAPHQL_ENDPOINT: "https://neates-prod.herokuapp.com"
       HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
     needs: hasura
     environment: Production
     env:
-      FIREBASE_PROJECT_ID: "geonotes-prod"
+      FIREBASE_PROJECT_ID: "neates-prod"
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     defaults:
       run:

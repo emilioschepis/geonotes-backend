@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
-    image: hasura/graphql-engine:v2.0.4.cli-migrations-v3
+    image: hasura/graphql-engine:v2.0.7.cli-migrations-v3
     ports:
       - "8080:8080"
     depends_on:
@@ -21,6 +21,6 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key":"local-only-hs256-key-00000000000"}'
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      ACTIONS_BASE_URL: http://host.docker.internal:5001/geonotes-prod/europe-west1
+      ACTIONS_BASE_URL: http://host.docker.internal:5001/neates-prod/europe-west1
 volumes:
   db_data:
