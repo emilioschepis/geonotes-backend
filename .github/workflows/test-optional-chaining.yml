@@ -16,5 +16,4 @@ jobs:
           node-version: "14"
       - run: |
           node -v
-          node
-          {}?.foo
+          node test.js
